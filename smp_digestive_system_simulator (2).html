@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Digestive System Simulator | SmartMathPro</title>
+<style>
+:root{--blue:#39bdff;--deep:#087ec0;--navy:#143753;--ink:#244056;--muted:#648094;--line:#d8eaf4;--pale:#f1fbff;--yellow:#ffe16c;--pink:#ffc7da;--green:#a9e9cb;--shadow:0 14px 32px rgba(34,102,153,.09)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:linear-gradient(180deg,#f0faff,#fff 64%);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
+button,input{font:inherit}button{touch-action:manipulation}button:focus-visible,input:focus-visible{outline:3px solid #f6b40a;outline-offset:3px}
+.container{width:min(860px,calc(100% - 24px));margin:20px auto 46px}.hero{position:relative;overflow:hidden;background:#39bdff;border-radius:26px;padding:23px 25px 21px;color:#073651;box-shadow:var(--shadow)}.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.18);pointer-events:none}.hero:before{width:240px;height:240px;right:-92px;top:-120px}.hero:after{width:150px;height:150px;right:100px;bottom:-115px}.eyebrow{font-size:12px;letter-spacing:1.6px;text-transform:uppercase;font-weight:900;opacity:.75}.hero h1{font-size:clamp(26px,4.2vw,38px);line-height:1.15;margin:5px 0 8px;font-weight:900;letter-spacing:-.8px}.hero p{margin:0;max-width:620px;font-size:14px}.badge-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:15px}.mini-badge{background:rgba(255,255,255,.64);border:1px solid rgba(255,255,255,.8);padding:5px 10px;border-radius:30px;font-size:11px;font-weight:850}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:15px 0}.tab{cursor:pointer;border:1.5px solid #cce9f9;border-radius:15px;padding:12px 10px;background:white;color:#1b729c;font-weight:900}.tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}.pane{display:none}.pane.active{display:block}.card{background:#fff;border:1px solid var(--line);border-radius:21px;padding:18px;box-shadow:var(--shadow);margin-bottom:14px}.section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 12px}.section-title h2{margin:0;color:var(--navy);font-size:19px;letter-spacing:-.4px}.small{font-size:12px;color:var(--muted)}.hint-pill{font-size:11px;font-weight:850;background:#e7f7ff;color:#14769e;padding:5px 9px;border-radius:99px}
+.food-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.food{cursor:pointer;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;min-height:92px;border:1.5px solid #dbeaf2;border-radius:16px;background:#fafcff;color:var(--navy);transition:.16s}.food .emoji{font-size:29px;line-height:1.15}.food .food-name{font-size:13px;font-weight:900}.food .food-sub{font-size:10px;color:var(--muted)}.food.active{border-color:#0c95d7;background:#e4f7ff;box-shadow:inset 0 0 0 1px #0c95d7}.food:hover{transform:translateY(-1px)}
+.mobile-scroll-hint{display:none;text-align:center;background:#e5f6ff;color:#47768f;font-size:11px;padding:6px;font-weight:800}.drawing-wrap{border:1px solid #d1ebfa;border-radius:17px;overflow:hidden;background:linear-gradient(180deg,#edfaff,#e8f7ff)}.drawing-scroll{overflow-x:auto;scrollbar-width:thin;scrollbar-color:#aadcf5 transparent}.drawing{width:100%;min-width:650px;display:block}.drawing-wrap svg text{font-family:inherit}.stage-rect{fill:#e4f5fc;stroke:#c6e8f5}.step-pin{cursor:pointer}.step-pin:hover circle.outer{stroke:#1579b4;stroke-width:2.5}.step-pin circle.outer{fill:#fff;stroke:#c3dfee;stroke-width:2}.step-pin.active circle.outer{fill:#ffe07b;stroke:#e8ad27;stroke-width:2.5}.step-pin text{pointer-events:none;fill:#244056;font-size:12px;font-weight:900}.organ-line{fill:none;stroke:#c27471;stroke-width:27;stroke-linecap:round;stroke-linejoin:round}.organ-core{fill:none;stroke:#ffc5ae;stroke-width:18;stroke-linecap:round;stroke-linejoin:round}.organ-highlight{fill:none;stroke:#fff4db;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;opacity:.65}.organ-line.large{stroke:#b87665;stroke-width:34}.organ-core.large{stroke:#f2c0a2;stroke-width:24}.organshadow{filter:drop-shadow(0 5px 5px rgba(114,83,70,.12))}.body-tag{fill:#fff;stroke:#d4e9f5;stroke-width:1.4}.body-label{font-weight:800;fill:#426176;font-size:12px}.minor-label{font-weight:700;fill:#748d9d;font-size:10px}.organ-label-line{stroke:#a6cfdf;stroke-width:1.6;fill:none}
+.status-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin:13px 0 2px}.stage-card{border:1.5px solid #dcebf2;background:#f8fcff;border-radius:12px;min-height:74px;padding:9px 5px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;text-align:center;color:var(--muted)}.stage-card .step-number{height:21px;width:21px;border-radius:50%;background:#e3f4fa;color:#4088aa;display:grid;place-items:center;font-size:11px;font-weight:900}.stage-card b{font-size:11px;line-height:1.3;font-weight:800}.stage-card.active{border-color:#159edf;background:#e6f8ff;color:#0c608f}.stage-card.active .step-number{background:#1395cf;color:#fff}.stage-card.done{background:#f1fdf6;border-color:#b0e7c8}
+.control-strip{display:flex;align-items:center;justify-content:space-between;gap:11px;flex-wrap:wrap;margin-top:14px}.control-left{display:flex;gap:7px;flex-wrap:wrap}.btn{cursor:pointer;border:0;border-radius:12px;font-weight:850;padding:10px 15px;white-space:nowrap}.btn.primary{background:#0b84c9;color:#fff}.btn.primary:hover{background:#096da6}.btn.soft{background:#e7f6ff;color:#196d9c}.btn.white{background:#fff;border:1.5px solid #cce3f1;color:#2a789c}.btn:disabled{opacity:.45;cursor:default}.speed{display:flex;align-items:center;gap:7px;color:#537487;font-size:12px;font-weight:750}.speed input{width:95px;accent-color:#0988c7}.progress-track{background:#e5f3fa;border-radius:99px;height:8px;margin-top:14px;overflow:hidden}.progress-fill{height:100%;width:0%;border-radius:inherit;background:linear-gradient(90deg,#39bdff,#0683cc)}
+.info-grid{display:grid;grid-template-columns:1.45fr 1fr;gap:14px}.info-panel{border-radius:17px;padding:17px;background:#f6fbff;border:1px solid #d8ebf5}.info-panel.accent{background:#fff9e5;border-color:#ffeaaa}.overline{letter-spacing:1.1px;font-size:10px;color:#4a8aa7;font-weight:900;text-transform:uppercase}.stage-heading{margin:2px 0 5px;font-size:21px;color:#183e5b;line-height:1.3}.stage-text{font-size:13px;margin:7px 0 0;line-height:1.8}.chem-row{display:flex;flex-wrap:wrap;gap:6px;margin:11px 0 0}.chem-chip{font-size:11px;background:#fff;border:1px solid #d4e6f1;color:#557182;font-weight:800;border-radius:99px;padding:5px 8px}.keyline{font-size:12px;margin:9px 0 0;color:#526e7e;line-height:1.7}.food-outcome{font-size:14px;color:#30495e;line-height:1.75;margin:9px 0 0}.rule{margin-top:12px;padding:10px 12px;border-radius:12px;background:#f6f9fc;border:1px dashed #cddfe9;color:#567186;font-size:12px}
+.quiz-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}.score-display{color:#087ec0;font-size:12px;font-weight:900;background:#e6f7ff;padding:7px 10px;border-radius:10px}.quiz-progress{height:7px;border-radius:99px;background:#e4f0f8;overflow:hidden;margin-bottom:19px}.quiz-progress span{display:block;height:100%;background:#39bdff;width:0%;transition:width .15s}.question{margin:0 0 15px;font-size:19px;line-height:1.5;color:#163b58}.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.choice{padding:15px 12px;min-height:66px;border:1.5px solid #d1e5ef;background:#fbfeff;border-radius:13px;text-align:left;font-size:13px;font-weight:750;color:#294d66;cursor:pointer;display:flex;align-items:center;gap:10px}.choice em{font-style:normal;display:grid;place-items:center;background:#eaf5fb;border-radius:8px;min-width:26px;height:26px;color:#207ba9;font-size:11px}.choice.good{background:#eafbf1;border-color:#4fc686}.choice.bad{background:#fff0f2;border-color:#ef8a96}.choice:disabled{cursor:default}.explain{display:none;margin-top:15px;padding:13px;background:#eef9ff;border:1px solid #c9ecff;border-radius:14px;font-size:13px;line-height:1.7}.explain.show{display:block}.quiz-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;flex-wrap:wrap}.foot{font-size:11px;color:#7f92a2;text-align:center;margin-top:14px}
+@media (max-width:600px){.container{width:min(100% - 20px,860px);margin:10px auto 25px}.hero{padding:19px 17px}.hero h1{font-size:26px}.card{padding:13px;border-radius:17px}.food-grid{gap:6px}.food{min-height:86px;padding:7px 3px}.food .emoji{font-size:24px}.food .food-name{font-size:11px}.food .food-sub{font-size:9px}.status-strip{grid-template-columns:repeat(3,1fr);gap:6px}.stage-card{min-height:56px}.info-grid{grid-template-columns:1fr}.drawing{min-width:690px}.mobile-scroll-hint{display:block}.control-strip{align-items:flex-start}.choices{grid-template-columns:1fr}.btn{padding:10px 12px;font-size:12px}.speed input{width:75px}.question{font-size:17px}}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main class="container">
+  <header class="hero">
+    <div class="eyebrow">SmartMathPro · Biology Lab</div>
+    <h1>Digestive System Simulator</h1>
+    <p>เลือกอาหาร แล้วดูเส้นทางการย่อยจากปากถึงลำไส้ พร้อมสำรวจเอนไซม์ การดูดซึม และหน้าที่ของอวัยวะแต่ละส่วน</p>
+    <div class="badge-row"><span class="mini-badge">ชีววิทยา ม.ปลาย</span><span class="mini-badge">จำลองการเคลื่อนที่</span><span class="mini-badge">กดเลือกอวัยวะได้</span><span class="mini-badge">Mini Quiz</span></div>
+  </header>
+  <nav class="tabs" aria-label="โหมดการเรียนรู้">
+    <button id="tabSim" class="tab active" aria-selected="true">🧪 ห้องทดลองการย่อยอาหาร</button>
+    <button id="tabQuiz" class="tab" aria-selected="false">🏆 ทดสอบความเข้าใจ</button>
+  </nav>
+  <section id="paneSim" class="pane active">
+    <div class="card">
+      <div class="section-title"><h2>1. เลือกอาหารที่ต้องการทดลอง</h2><span class="hint-pill">คลิกเพื่อเปลี่ยนอาหาร</span></div>
+      <div id="foodGrid" class="food-grid" role="group" aria-label="เลือกอาหาร">
+        <button class="food active" data-food="carb"><span class="emoji">🍞</span><span class="food-name">ขนมปัง</span><span class="food-sub">คาร์โบไฮเดรต</span></button>
+        <button class="food" data-food="protein"><span class="emoji">🥚</span><span class="food-name">ไข่</span><span class="food-sub">โปรตีน</span></button>
+        <button class="food" data-food="fat"><span class="emoji">🧈</span><span class="food-name">เนย</span><span class="food-sub">ไขมัน</span></button>
+        <button class="food" data-food="mixed"><span class="emoji">🍱</span><span class="food-name">อาหารผสม</span><span class="food-sub">หลายสารอาหาร</span></button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-title"><h2>2. ดูอาหารเดินทางผ่านระบบย่อยอาหาร</h2><span class="hint-pill">แตะหมายเลขเพื่อข้ามไปจุดนั้น</span></div>
+      <div class="drawing-wrap">
+      <div class="drawing-scroll">
+      <svg id="digestiveSvg" class="drawing" viewBox="0 0 900 445" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="แผนภาพจำลองระบบย่อยอาหารจากปากผ่านหลอดอาหาร กระเพาะอาหาร ลำไส้เล็ก ลำไส้ใหญ่ และทวารหนัก">
+        <defs>
+          <linearGradient id="bggrad" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f0faff"/><stop offset="1" stop-color="#dff4ff"/></linearGradient>
+          <linearGradient id="stomachFill" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffd39f"/><stop offset="1" stop-color="#ed9b83"/></linearGradient>
+          <radialGradient id="foodFill"><stop stop-color="#fff0ac"/><stop offset="1" stop-color="#efab43"/></radialGradient>
+          <filter id="glow"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <rect width="900" height="445" fill="url(#bggrad)" />
+        <g opacity=".32" fill="none" stroke="#9acfea"><circle cx="74" cy="70" r="22"/><circle cx="835" cy="70" r="33"/><path d="M0 80 Q140 28 285 77 T580 78 T900 60" stroke-dasharray="6 11"/></g>
+        <rect x="22" y="17" width="280" height="34" rx="13" fill="#ffffff" fill-opacity=".84" stroke="#cde9f6"/>
+        <text x="36" y="39" fill="#2b6688" font-size="13" font-weight="800">● เส้นทางอาหาร (แผนภาพแบบย่อ)</text>
+        <g class="organshadow">
+          <!-- mouth and teeth -->
+          <path d="M59 205 Q75 181 98 197 L123 211 Q106 246 74 240 Q55 231 59 205" fill="#c86f6e" stroke="#ae5d5e" stroke-width="3"/>
+          <path d="M64 215 Q89 200 122 217 Q100 236 67 229Z" fill="#fce3e0"/>
+          <path d="M65 219 Q92 217 112 219" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-dasharray="6 2"/>
+          <!-- stomach as sac -->
+          <path d="M263 254 C249 290 266 329 302 342 C340 355 373 331 393 299 C405 277 388 256 365 258 C347 258 345 243 334 232 C322 221 310 230 309 250 C304 266 287 268 263 254 Z" fill="url(#stomachFill)" stroke="#ba736a" stroke-width="5"/>
+          <path d="M287 285 Q285 321 319 326 Q345 327 370 290" fill="none" stroke="#fff0c6" stroke-width="6" opacity=".65" stroke-linecap="round"/>
+          <!-- liver accessory organ -->
+          <path d="M347 159 C367 137 421 140 459 159 C478 170 463 204 440 214 C412 225 365 202 351 184 Z" fill="#bd6760" stroke="#944d4b" stroke-width="3"/>
+          <path d="M369 167 Q402 159 437 179" stroke="#df9888" stroke-width="4" opacity=".7" fill="none"/>
+          <path d="M428 205 C421 220 433 229 439 221 C445 212 438 204 428 205Z" fill="#9bc27a" stroke="#6a9855" stroke-width="2"/>
+          <!-- pancreas accessory organ -->
+          <path d="M375 363 Q398 347 438 359 Q457 365 473 359 Q462 385 430 388 Q404 393 375 374Z" fill="#eac47d" stroke="#cf9f59" stroke-width="3"/>
+          <!-- path of food in tube, painted by segments -->
+          <g id="gutPaths">
+            <path class="organ-line" d="M88 220 C112 220 137 220 157 220"/>
+            <path class="organ-line" d="M157 220 C187 216 215 218 245 235 C260 245 272 257 282 275"/>
+            <path class="organ-line" d="M282 275 C291 310 330 323 358 299 C367 293 369 273 376 260"/>
+            <path class="organ-line" d="M376 260 C402 245 414 241 434 264 C452 283 450 304 429 315 C407 326 416 349 442 345 C473 340 482 297 505 278 C532 254 551 280 536 304 C515 336 506 354 539 357 C576 359 592 315 582 289 C567 253 592 239 614 263 C633 284 621 302 611 325 C596 351 626 359 654 334"/>
+            <path class="organ-line large" d="M654 334 C680 319 674 259 692 249 C718 228 742 249 744 272 C746 310 721 330 739 352 C753 362 773 346 780 332"/>
+            <path class="organ-line" d="M780 332 C792 326 807 338 810 359"/>
+          </g>
+          <g id="gutCores">
+            <path class="organ-core" d="M88 220 C112 220 137 220 157 220"/>
+            <path class="organ-core" d="M157 220 C187 216 215 218 245 235 C260 245 272 257 282 275"/>
+            <path class="organ-core" d="M282 275 C291 310 330 323 358 299 C367 293 369 273 376 260"/>
+            <path class="organ-core" d="M376 260 C402 245 414 241 434 264 C452 283 450 304 429 315 C407 326 416 349 442 345 C473 340 482 297 505 278 C532 254 551 280 536 304 C515 336 506 354 539 357 C576 359 592 315 582 289 C567 253 592 239 614 263 C633 284 621 302 611 325 C596 351 626 359 654 334"/>
+            <path class="organ-core large" d="M654 334 C680 319 674 259 692 249 C718 228 742 249 744 272 C746 310 721 330 739 352 C753 362 773 346 780 332"/>
+            <path class="organ-core" d="M780 332 C792 326 807 338 810 359"/>
+          </g>
+          <g id="gutLights" opacity=".68">
+            <path class="organ-highlight" d="M88 220 C112 220 137 220 157 220"/>
+            <path class="organ-highlight" d="M157 220 C187 216 215 218 245 235 C260 245 272 257 282 275"/>
+            <path class="organ-highlight" d="M282 275 C291 310 330 323 358 299 C367 293 369 273 376 260"/>
+            <path class="organ-highlight" d="M376 260 C402 245 414 241 434 264 C452 283 450 304 429 315 C407 326 416 349 442 345 C473 340 482 297 505 278 C532 254 551 280 536 304 C515 336 506 354 539 357 C576 359 592 315 582 289 C567 253 592 239 614 263 C633 284 621 302 611 325 C596 351 626 359 654 334"/>
+            <path class="organ-highlight" d="M654 334 C680 319 674 259 692 249 C718 228 742 249 744 272 C746 310 721 330 739 352 C753 362 773 346 780 332"/>
+            <path class="organ-highlight" d="M780 332 C792 326 807 338 810 359"/>
+          </g>
+          <g id="particleGroup" filter="url(#glow)">
+            <circle id="particleHalo" cx="88" cy="220" r="21" fill="#ffe7ac" opacity=".45"/>
+            <circle id="particle" cx="88" cy="220" r="11" fill="url(#foodFill)" stroke="#d78018" stroke-width="2.5"/>
+            <circle id="particleDot" cx="84" cy="217" r="3.2" fill="#fff9d8"/>
+          </g>
+        </g>
+        <g>
+          <path class="organ-label-line" d="M365 143 L391 130"/><text class="body-label" x="394" y="132">ตับ</text>
+          <path class="organ-label-line" d="M438 223 L475 223"/><text class="minor-label" x="480" y="226">ถุงน้ำดี</text>
+          <path class="organ-label-line" d="M429 390 L452 405"/><text class="body-label" x="458" y="409">ตับอ่อน</text>
+        </g>
+        <g id="stagePins">
+          <g class="step-pin active" data-stage="0" tabindex="0" role="button" aria-label="ดูปาก"><circle class="outer" cx="88" cy="158" r="17"/><text x="88" y="162" text-anchor="middle">1</text></g>
+          <g class="step-pin" data-stage="1" tabindex="0" role="button" aria-label="ดูหลอดอาหาร"><circle class="outer" cx="198" cy="158" r="17"/><text x="198" y="162" text-anchor="middle">2</text></g>
+          <g class="step-pin" data-stage="2" tabindex="0" role="button" aria-label="ดูกระเพาะอาหาร"><circle class="outer" cx="310" cy="184" r="17"/><text x="310" y="188" text-anchor="middle">3</text></g>
+          <g class="step-pin" data-stage="3" tabindex="0" role="button" aria-label="ดูลำไส้เล็ก"><circle class="outer" cx="525" cy="205" r="17"/><text x="525" y="209" text-anchor="middle">4</text></g>
+          <g class="step-pin" data-stage="4" tabindex="0" role="button" aria-label="ดูลำไส้ใหญ่"><circle class="outer" cx="714" cy="191" r="17"/><text x="714" y="195" text-anchor="middle">5</text></g>
+          <g class="step-pin" data-stage="5" tabindex="0" role="button" aria-label="ดูไส้ตรงและทวารหนัก"><circle class="outer" cx="821" cy="285" r="17"/><text x="821" y="289" text-anchor="middle">6</text></g>
+        </g>
+        <g>
+          <text class="body-label" x="69" y="120">ปาก</text><text class="body-label" x="159" y="121">หลอดอาหาร</text><text class="body-label" x="272" y="153">กระเพาะอาหาร</text><text class="body-label" x="480" y="165">ลำไส้เล็ก</text><text class="body-label" x="678" y="156">ลำไส้ใหญ่</text><text class="body-label" x="766" y="259">ไส้ตรง</text>
+        </g>
+        <text x="24" y="432" fill="#7998ac" font-size="11" font-weight="650">ภาพจำลองเพื่อการเรียนรู้ ไม่แสดงสัดส่วนและตำแหน่งอวัยวะตามกายวิภาคจริง</text>
+      </svg>
+      </div>
+      <div class="mobile-scroll-hint">↔ เลื่อนภาพซ้าย–ขวาเพื่อดูอวัยวะทั้งหมด</div>
+      </div>
+      <div class="status-strip" id="stageStrip" aria-label="เลือกขั้นตอนการย่อย">
+        <button class="stage-card active" data-stage="0"><span class="step-number">1</span><b>ปาก</b></button>
+        <button class="stage-card" data-stage="1"><span class="step-number">2</span><b>หลอดอาหาร</b></button>
+        <button class="stage-card" data-stage="2"><span class="step-number">3</span><b>กระเพาะ</b></button>
+        <button class="stage-card" data-stage="3"><span class="step-number">4</span><b>ลำไส้เล็ก</b></button>
+        <button class="stage-card" data-stage="4"><span class="step-number">5</span><b>ลำไส้ใหญ่</b></button>
+        <button class="stage-card" data-stage="5"><span class="step-number">6</span><b>ขับถ่าย</b></button>
+      </div>
+      <div class="progress-track" aria-label="ความคืบหน้าของอาหาร"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="control-strip">
+        <div class="control-left">
+          <button class="btn primary" id="playButton">▶ เริ่มจำลอง</button>
+          <button class="btn soft" id="nextButton">ถัดไป →</button>
+          <button class="btn white" id="resetButton">↻ เริ่มใหม่</button>
+        </div>
+        <label class="speed">ความเร็ว <input id="speedSlider" type="range" min="0.5" max="2" step="0.25" value="1"/><span id="speedLabel">1×</span></label>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-title"><h2>3. เกิดอะไรขึ้นกับอาหาร?</h2><span class="hint-pill" id="stageCount">ขั้นตอน 1 / 6</span></div>
+      <div class="info-grid">
+        <div class="info-panel">
+          <span class="overline">ORGAN & PROCESS</span>
+          <h3 class="stage-heading" id="organName">ปาก (Mouth)</h3>
+          <p class="stage-text" id="stageDescription"></p>
+          <div class="chem-row" id="enzymes"></div>
+        </div>
+        <div class="info-panel accent">
+          <span class="overline">YOUR FOOD</span>
+          <h3 class="stage-heading" id="foodAt">🍞 ขนมปัง</h3>
+          <p class="food-outcome" id="foodEffect"></p>
+        </div>
+      </div>
+      <div class="rule"><strong>จำไว้:</strong> การย่อยเชิงกลและการย่อยทางเคมีเป็นคนละกระบวนการ และน้ำดี <strong>ไม่ใช่เอนไซม์</strong> แต่ช่วยทำให้ไขมันแตกเป็นหยดเล็ก ๆ เพื่อเพิ่มพื้นที่ผิวให้ไลเพสทำงาน</div>
+    </div>
+  </section>
+  <section id="paneQuiz" class="pane">
+    <div class="card" id="quizCard">
+      <div class="quiz-head"><div class="small" id="qLabel">คำถามข้อที่ 1 / 6</div><span class="score-display">คะแนน <span id="scoreValue">0</span> / 60</span></div>
+      <div class="quiz-progress"><span id="quizProgress"></span></div>
+      <h2 class="question" id="questionText"></h2>
+      <div class="choices" id="choices"></div>
+      <div class="explain" id="explain"></div>
+      <div class="quiz-foot"><div class="small" id="bestScore">คะแนนสูงสุด: 0 / 60</div><button class="btn primary" id="quizNext" style="display:none">ข้อถัดไป →</button></div>
+    </div>
+  </section>
+  <div class="foot">SmartMathPro · Interactive Prototype · ระบบย่อยอาหารของมนุษย์ (ระดับ ม.ปลาย)</div>
+</main>
+<script>
+(()=>{
+'use strict';
+const foods={
+ carb:{name:'ขนมปัง',icon:'🍞', color:'#f0b444', effects:[
+ 'การเคี้ยวช่วยบดอาหาร และอะไมเลสในน้ำลายเริ่มย่อยแป้งให้เป็นน้ำตาลที่มีโมเลกุลเล็กลง',
+ 'อาหารที่เคี้ยวแล้วเคลื่อนผ่านหลอดอาหารด้วยการบีบตัวเป็นคลื่น ไม่ใช่อาศัยแรงโน้มถ่วงอย่างเดียว',
+ 'กระเพาะคลุกเคล้าอาหารกับน้ำย่อย แต่การย่อยแป้งด้วยอะไมเลสในน้ำลายจะลดลงเมื่อเจอสภาพกรด',
+ 'อะไมเลสจากตับอ่อนและเอนไซม์ที่ผนังลำไส้ย่อยคาร์โบไฮเดรตเป็นน้ำตาลโมเลกุลเดี่ยว เช่น กลูโคส จากนั้นจึงดูดซึม',
+ 'กากอาหารบางส่วนที่ย่อยหรือดูดซึมไม่ได้เข้าสู่ลำไส้ใหญ่ พร้อมน้ำและเกลือแร่ที่เหลืออยู่',
+ 'ส่วนที่ไม่ถูกย่อยและไม่ถูกดูดซึมจะรวมเป็นอุจจาระและถูกขับออก'
+ ]},
+ protein:{name:'ไข่',icon:'🥚',color:'#a971d0',effects:[
+ 'การเคี้ยวบดไข่ให้มีชิ้นเล็กลง แต่ยังไม่มีการย่อยโปรตีนด้วยเอนไซม์อย่างมีนัยสำคัญในปาก',
+ 'โปรตีนเคลื่อนผ่านหลอดอาหารไปยังกระเพาะโดยการบีบตัวเป็นคลื่น',
+ 'กรดในกระเพาะช่วยให้โปรตีนเสียสภาพบางส่วน และเพปซินเริ่มย่อยโปรตีนเป็นสายเปปไทด์ที่สั้นลง',
+ 'เอนไซม์จากตับอ่อนและผนังลำไส้ย่อยเปปไทด์ต่อจนได้ผลิตภัณฑ์ที่ดูดซึมได้ เช่น กรดอะมิโน',
+ 'สารอาหารส่วนใหญ่ถูกดูดซึมในลำไส้เล็กแล้ว เหลือกากอาหารเข้าสู่ลำไส้ใหญ่',
+ 'ส่วนที่เหลือจากการย่อยและดูดซึมจะถูกขับออก'
+ ]},
+ fat:{name:'เนย',icon:'🧈',color:'#e7aa21',effects:[
+ 'การเคี้ยวและการคลุกเคล้าช่วยให้อาหารแตกเป็นชิ้นเล็กลง การย่อยไขมันด้วยเอนไซม์ยังมีไม่มากในปาก',
+ 'อาหารที่มีไขมันเคลื่อนผ่านหลอดอาหารไปยังกระเพาะ',
+ 'กระเพาะคลุกเคล้าอาหารและมีการย่อยไขมันบางส่วน แต่การย่อยไขมันส่วนใหญ่เกิดในลำไส้เล็ก',
+ 'น้ำดีช่วยทำให้ไขมันเป็นหยดเล็ก ๆ (emulsification) จากนั้นไลเพสจากตับอ่อนย่อยไตรกลีเซอไรด์ และผลิตภัณฑ์ถูกดูดซึมที่ลำไส้เล็ก',
+ 'กากอาหารและน้ำบางส่วนเคลื่อนต่อไปยังลำไส้ใหญ่',
+ 'สิ่งตกค้างที่ไม่ถูกดูดซึมถูกขับออกทางทวารหนัก'
+ ]},
+ mixed:{name:'อาหารผสม',icon:'🍱',color:'#f19a74',effects:[
+ 'ฟันบดอาหารและน้ำลายช่วยหล่อลื่น ขณะเดียวกันอะไมเลสเริ่มย่อยแป้งในอาหาร',
+ 'อาหารหลากชนิดเคลื่อนจากปากผ่านหลอดอาหารด้วย peristalsis',
+ 'กระเพาะคลุกเคล้าอาหาร กรดและเพปซินเริ่มย่อยโปรตีน ส่วนการย่อยแป้งด้วยอะไมเลสจากน้ำลายลดลง',
+ 'ลำไส้เล็กเป็นบริเวณหลักของการย่อยและดูดซึม: คาร์โบไฮเดรต → น้ำตาลโมเลกุลเดี่ยว โปรตีน → กรดอะมิโน ไขมัน → ผลิตภัณฑ์จากการย่อยไขมัน',
+ 'ลำไส้ใหญ่ดูดซึมน้ำและอิเล็กโทรไลต์บางส่วน จุลินทรีย์ในลำไส้มีบทบาทต่อกากอาหารบางชนิด',
+ 'ส่วนที่ย่อยหรือดูดซึมไม่ได้จะกลายเป็นอุจจาระและขับออก'
+ ]}
+};
+const stages=[
+ {name:'ปาก (Mouth)', desc:'ฟันบดอาหารให้ชิ้นเล็กลง (การย่อยเชิงกล) ลิ้นช่วยคลุกเคล้ากับน้ำลาย และเอนไซม์อะไมเลสในน้ำลายเริ่มย่อยแป้ง',chips:['เคี้ยวอาหาร','น้ำลาย','Salivary amylase']},
+ {name:'หลอดอาหาร (Esophagus)',desc:'กล้ามเนื้อหลอดอาหารบีบตัวเป็นคลื่น (peristalsis) เพื่อส่งอาหารไปยังกระเพาะอาหาร โดยไม่มีการหลั่งเอนไซม์ย่อยอาหารสำคัญจากหลอดอาหารเอง',chips:['Peristalsis','ลำเลียงอาหาร']},
+ {name:'กระเพาะอาหาร (Stomach)',desc:'กล้ามเนื้อกระเพาะคลุกเคล้าอาหาร กรดไฮโดรคลอริกช่วยให้มีสภาพเป็นกรดและทำให้โปรตีนเสียสภาพ เอนไซม์เพปซินย่อยโปรตีนให้มีขนาดเล็กลง',chips:['HCl','Pepsin','การคลุกเคล้า']},
+ {name:'ลำไส้เล็ก (Small intestine)',desc:'เป็นบริเวณสำคัญของการย่อยทางเคมีและการดูดซึมสารอาหาร ตับอ่อนส่งเอนไซม์ช่วยย่อยอาหาร และน้ำดีจากตับที่เก็บในถุงน้ำดีช่วยทำให้ไขมันแตกเป็นหยดเล็ก ๆ',chips:['Pancreatic amylase','Proteases','Lipase','น้ำดี ≠ เอนไซม์','Villi / Microvilli']},
+ {name:'ลำไส้ใหญ่ (Large intestine)',desc:'รับกากอาหารที่เหลือจากลำไส้เล็ก ดูดซึมน้ำและอิเล็กโทรไลต์บางส่วน และมีจุลินทรีย์ที่เกี่ยวข้องกับการเปลี่ยนแปลงกากอาหารบางชนิด',chips:['ดูดซึมน้ำ','อิเล็กโทรไลต์','จุลินทรีย์']},
+ {name:'ไส้ตรงและทวารหนัก (Rectum & anus)',desc:'กากอาหารรวมตัวเป็นอุจจาระ เก็บไว้ชั่วคราวในไส้ตรง ก่อนถูกขับออกทางทวารหนัก ซึ่งเป็นกระบวนการขับถ่ายกากอาหาร ไม่ใช่การขับถ่ายของเสียจากเมแทบอลิซึม',chips:['เก็บอุจจาระ','Defecation']}
+];
+let activeFood='carb', stageNow=0, progress=0, playing=false,lastTimestamp=0,raf=0;
+const $=id=>document.getElementById(id);
+const paths=[...document.querySelectorAll('#gutPaths path')];
+function scrollToOrgan(stage){const el=document.querySelector('.drawing-scroll'), picture=$('digestiveSvg'); if(!el||!picture||picture.clientWidth<=el.clientWidth)return;const xs=[92,200,315,530,714,815];const p=xs[stage]/900*picture.clientWidth;const goal=Math.max(0,Math.min(picture.clientWidth-el.clientWidth,p-el.clientWidth*.47));el.scrollTo({left:goal,behavior:'smooth'});}const lengths=paths.map(el=>el.getTotalLength());const totals=lengths.reduce((a,b)=>a+b,0);const starts=lengths.map((v,i)=>lengths.slice(0,i).reduce((a,b)=>a+b,0));
+const stageFromProgress=p=>{const d=p*totals;for(let i=0;i<lengths.length;i++){if(d < starts[i]+lengths[i] || i===lengths.length-1)return i;}return 0};
+function setPlayButton(){ $('playButton').textContent=playing?'⏸ หยุดชั่วคราว':progress>=1?'↻ เล่นอีกครั้ง':'▶ เริ่มจำลอง';}
+function stop(){playing=false; if(raf){cancelAnimationFrame(raf);raf=0;}lastTimestamp=0;setPlayButton();}
+function seek(stage,pct=.38){stop();progress=Math.min(.9999,(starts[stage]+lengths[stage]*pct)/totals);render();scrollToOrgan(stage);}
+function getCurrentPoint(fraction){const distance=Math.max(0,Math.min(totals,totals*fraction));let i=0;while(i<lengths.length-1 && distance>starts[i]+lengths[i])i++;return paths[i].getPointAtLength(Math.max(0,Math.min(lengths[i],distance-starts[i])))}
+function render(){const pt=getCurrentPoint(progress);for(const id of ['particle','particleHalo']){$(id).setAttribute('cx',pt.x);$(id).setAttribute('cy',pt.y)}$('particleDot').setAttribute('cx',pt.x-4);$('particleDot').setAttribute('cy',pt.y-4);$('particle').setAttribute('fill',foods[activeFood].color);$('particle').setAttribute('stroke',activeFood==='protein'?'#684493':'#bd7b22');
+ $('progressFill').style.width=(progress*100).toFixed(2)+'%';let i=stageFromProgress(progress); if(i!==stageNow){stageNow=i;renderStageInfo();scrollToOrgan(i)} document.querySelectorAll('[data-stage].stage-card').forEach(el=>{let n=+el.dataset.stage;el.classList.toggle('active',n===i);el.classList.toggle('done',n<i)});document.querySelectorAll('.step-pin').forEach(el=>el.classList.toggle('active',+el.dataset.stage===i));
+}
+function renderStageInfo(){const st=stages[stageNow],food=foods[activeFood];$('stageCount').textContent=`ขั้นตอน ${stageNow+1} / 6`;$('organName').textContent=st.name;$('stageDescription').textContent=st.desc;$('enzymes').innerHTML='';st.chips.forEach(s=>{let el=document.createElement('span');el.className='chem-chip';el.textContent=s;$('enzymes').appendChild(el)});$('foodAt').textContent=`${food.icon} ${food.name}`;$('foodEffect').textContent=food.effects[stageNow]}
+function animate(t){if(!playing)return;if(!lastTimestamp)lastTimestamp=t;const dt=Math.min(.07,Math.max(0,(t-lastTimestamp)/1000));lastTimestamp=t;const speed=Number($('speedSlider').value);progress=Math.min(1,progress+dt*speed/20);render();if(progress>=1){stop();return;}raf=requestAnimationFrame(animate)}
+$('playButton').addEventListener('click',()=>{if(playing){stop();return}if(progress>=1)progress=0;playing=true;lastTimestamp=0;setPlayButton();raf=requestAnimationFrame(animate)});
+$('nextButton').addEventListener('click',()=>{let next=stageFromProgress(progress)+1;if(next>=6){stop();progress=1;render()}else seek(next,.45)});
+$('resetButton').addEventListener('click',()=>{stop();progress=0;render()});
+$('speedSlider').addEventListener('input',()=>{$('speedLabel').textContent=Number($('speedSlider').value).toString()+'×'});
+document.querySelectorAll('.food').forEach(b=>b.addEventListener('click',()=>{activeFood=b.dataset.food;document.querySelectorAll('.food').forEach(el=>el.classList.toggle('active',el===b));stop();progress=0;stageNow=-1;render()}));
+document.querySelectorAll('.stage-card, .step-pin').forEach(el=>{el.addEventListener('click',()=>seek(+el.dataset.stage));if(el.classList.contains('step-pin'))el.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();seek(+el.dataset.stage)}})});
+function showTab(which){const quiz=which==='quiz';$('paneSim').classList.toggle('active',!quiz);$('paneQuiz').classList.toggle('active',quiz);$('tabSim').classList.toggle('active',!quiz);$('tabQuiz').classList.toggle('active',quiz);$('tabSim').setAttribute('aria-selected',String(!quiz));$('tabQuiz').setAttribute('aria-selected',String(quiz));if(quiz)stop()}
+$('tabSim').addEventListener('click',()=>showTab('sim'));$('tabQuiz').addEventListener('click',()=>showTab('quiz'));
+const quiz=[
+ {q:'เอนไซม์ชนิดใดเริ่มย่อยแป้งในปาก?',choices:['เพปซิน (Pepsin)','อะไมเลสในน้ำลาย (Salivary amylase)','ไลเพสจากตับอ่อน (Pancreatic lipase)','ทริปซิน (Trypsin)'],answer:1,why:'Salivary amylase ในน้ำลายเริ่มย่อยแป้งในปาก ส่วนเพปซินทำงานในกระเพาะ และไลเพสมีบทบาทสำคัญต่อการย่อยไขมัน'},
+ {q:'หน้าที่สำคัญของหลอดอาหารคือข้อใด?',choices:['ดูดซึมกรดอะมิโน','หลั่งน้ำดี','ส่งอาหารด้วยการบีบตัวเป็นคลื่น','ย่อยโปรตีนด้วยเพปซิน'],answer:2,why:'หลอดอาหารเคลื่อนอาหารด้วยการบีบตัวแบบ peristalsis ไม่ใช่บริเวณหลักของการย่อยทางเคมีหรือดูดซึมสารอาหาร'},
+ {q:'เอนไซม์ที่ทำหน้าที่ย่อยโปรตีนในกระเพาะอาหารคืออะไร?',choices:['เพปซิน','มอลเทส','อะไมเลส','ซูเครส'],answer:0,why:'เพปซิน (Pepsin) ทำงานได้ดีในสภาพกรดและย่อยโปรตีนให้เป็นสายเปปไทด์ที่สั้นลง'},
+ {q:'ข้อใดอธิบายหน้าที่ของน้ำดีได้ถูกต้องที่สุด?',choices:['ย่อยแป้งเป็นกลูโคสโดยตรง','ย่อยโปรตีนเป็นกรดอะมิโน','เป็นเอนไซม์ไลเพส','ทำให้ไขมันแตกเป็นหยดเล็ก ๆ เพื่อช่วยการย่อย'],answer:3,why:'น้ำดีไม่ใช่เอนไซม์ แต่ช่วย emulsification ทำให้หยดไขมันเล็กลงและเพิ่มพื้นที่ผิวสำหรับเอนไซม์ไลเพส'},
+ {q:'อวัยวะใดเป็นบริเวณหลักของการดูดซึมสารอาหารที่ผ่านการย่อยแล้ว?',choices:['กระเพาะอาหาร','ลำไส้เล็ก','หลอดอาหาร','ลำไส้ใหญ่'],answer:1,why:'ลำไส้เล็กมีวิลลัสและไมโครวิลลัสเพิ่มพื้นที่ผิว จึงเป็นบริเวณหลักของการดูดซึมสารอาหาร'},
+ {q:'ลำไส้ใหญ่มีหน้าที่เด่นอย่างไร?',choices:['ย่อยแป้งด้วยอะไมเลสในน้ำลาย','หลั่งกรดเพื่อย่อยโปรตีน','ดูดซึมน้ำและอิเล็กโทรไลต์บางส่วน','ผลิตน้ำดีเพื่อย่อยไขมัน'],answer:2,why:'ลำไส้ใหญ่ดูดซึมน้ำและเกลือแร่บางส่วน และเกี่ยวข้องกับการก่อตัวของอุจจาระ'}
+];
+let qIndex=0,score=0,answered=false,finished=false;const bestKey='smp_digestive_best';
+function getBest(){try{return Number(localStorage.getItem(bestKey)||0)}catch(e){return 0}}
+function saveBest(n){try{localStorage.setItem(bestKey,String(n))}catch(e){}}
+function renderQuiz(){$('qLabel').textContent=`คำถามข้อที่ ${qIndex+1} / ${quiz.length}`;$('scoreValue').textContent=score;$('quizProgress').style.width=(qIndex/quiz.length*100)+'%';$('bestScore').textContent=`คะแนนสูงสุด: ${getBest()} / ${quiz.length*10}`;answered=false;finished=false;const q=quiz[qIndex];$('questionText').textContent=q.q;$('choices').innerHTML='';q.choices.forEach((c,i)=>{const b=document.createElement('button');b.className='choice';let em=document.createElement('em');em.textContent=String.fromCharCode(65+i);let sp=document.createElement('span');sp.textContent=c;b.append(em,sp);b.addEventListener('click',()=>answer(i));$('choices').appendChild(b)});$('explain').className='explain';$('explain').textContent='';$('quizNext').style.display='none'}
+function answer(i){if(answered)return;answered=true;const q=quiz[qIndex];if(i===q.answer)score+=10;$('scoreValue').textContent=score;[...$('choices').children].forEach((el,k)=>{el.disabled=true;if(k===q.answer)el.classList.add('good');else if(k===i)el.classList.add('bad')});$('explain').className='explain show';$('explain').textContent=(i===q.answer?'✓ ถูกต้อง! ':'✕ ยังไม่ถูกนะ ') + q.why;$('quizNext').style.display='inline-block';$('quizNext').textContent=qIndex===quiz.length-1?'ดูสรุปคะแนน':'ข้อถัดไป →'}
+function finishQuiz(){finished=true;$('quizProgress').style.width='100%';if(score>getBest())saveBest(score);$('bestScore').textContent=`คะแนนสูงสุด: ${getBest()} / ${quiz.length*10}`;$('qLabel').textContent='ทำครบทุกข้อแล้ว';$('questionText').textContent=`ได้ ${score} / ${quiz.length*10} คะแนน`;$('choices').innerHTML='<div style="grid-column:1/-1;border:1px solid #bfece0;padding:18px;border-radius:16px;background:#f1fff8;font-weight:750;color:#287a55">ลองกลับไปสำรวจขั้นตอนการย่อย แล้วกลับมาทำแบบทดสอบอีกครั้งได้</div>';$('explain').className='explain';$('quizNext').style.display='inline-block';$('quizNext').textContent='↻ เล่นอีกครั้ง'}
+$('quizNext').addEventListener('click',()=>{if(finished){qIndex=0;score=0;renderQuiz()}else if(qIndex<quiz.length-1){qIndex++;renderQuiz()}else finishQuiz()});
+renderStageInfo();render();renderQuiz();
+})();
+</script>
+</body>
+</html>
